@@ -6,8 +6,8 @@ import com.example.bank.types.AccountNumber;
 import com.example.bank.types.UserId;
 
 public interface AccountRepository {
-    Account find(AccountId id) throws Exception;
-    Account find(AccountNumber accountNumber) throws Exception;
-    Account find(UserId userId) throws Exception;
-    Account save(Account account) throws Exception;
+    Account find(AccountId id);
+    Account find(AccountNumber accountNumber);
+    Account find(UserId userId);
+    Account save(Account account);
 }

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountTransferServiceImpl implements AccountTransferService {
     @Override
-    public void transfer(Account sourceAccount, Account targetAccount, Money targetMoney, ExchangeRate exchangeRate) throws Exception, DailyLimitExceededException {
-        Money sourceMoney =  exchangeRate.exchageTo(targetMoney);
-        sourceAccount.deposit(sourceMoney);
-        targetAccount.withdraw(targetMoney);
+    public void transfer(Account sourceAccount, Account targetAccount, Money targetMoney, ExchangeRate exchangeRate) {
+        Money sourceMoney = exchangeRate.exchangeTo(targetMoney);
+        sourceAccount.withdraw(sourceMoney);
+        targetAccount.deposit(targetMoney);
     }
 }

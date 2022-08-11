@@ -1,21 +1,26 @@
 package com.example.bank.types;
 
-import com.example.bank.exception.MoneyAmoutNotNullException;
+import com.example.bank.exception.InvalidCurrencyException;
+import com.example.bank.exception.MoneyAmountNotNullException;
+import com.example.bank.exception.UnexpectedCurrencyTypeException;
 
+import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 
-public class Money {
+public class Money implements Comparable<Money> {
 
-    private BigDecimal amout;
+    private final BigDecimal amount;
 
-    private Currency currency;
+    private final Currency currency;
 
-    public Money(BigDecimal amout, Currency currency) {
-
-        if (amout == null){
-            throw new MoneyAmoutNotNullException("金额不能为空");
+    public Money(BigDecimal amount, Currency currency) {
+        if (null == amount){
+            throw new MoneyAmountNotNullException("货币金额不能为空指针");
         }
-        this.amout = amout;
+        if (null == currency){
+            throw new InvalidCurrencyException("货币币种不能为空指针");
+        }
+        this.amount = amount;
         this.currency = currency;
     }
 
@@ -23,22 +28,34 @@ public class Money {
         return currency;
     }
 
-    public BigDecimal getAmout() {
-        return amout;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public int compareTo(Money money) {
-        return this.amout.compareTo(money.getAmout());
+    @Override
+    public int compareTo(@Nonnull Money money) {
+        if (currency.compareTo(money.getCurrency()) != 0) {
+            // 货币币种不一致时直接比较金额无意义！
+            throw new UnexpectedCurrencyTypeException();
+        }
+        return amount.compareTo(money.getAmount());
     }
 
-    public Money subtract(Money money) throws Exception {
-        BigDecimal resultAmout = this.amout.subtract(money.getAmout());
-        return new Money(resultAmout, this.currency);
+    public Money subtract(@Nonnull Money money) throws UnexpectedCurrencyTypeException  {
+        if (currency.compareTo(money.getCurrency()) != 0) {
+            // 若货币币种不一致，则不能进行加减运算
+            throw new UnexpectedCurrencyTypeException();
+        }
+        BigDecimal resultAmount = amount.subtract(money.getAmount());
+        return new Money(resultAmount, currency);
     }
 
-
-    public Money add(Money money) throws MoneyAmoutNotNullException {
-        BigDecimal resultAmout = this.amout.add(money.getAmout());
-        return new Money(resultAmout, this.currency);
+    public Money add(@Nonnull Money money) throws UnexpectedCurrencyTypeException {
+        if (currency.compareTo(money.getCurrency()) != 0) {
+            // 若货币币种不一致，则不能进行加减运算
+            throw new UnexpectedCurrencyTypeException();
+        }
+        BigDecimal resultAmount = amount.add(money.getAmount());
+        return new Money(resultAmount, currency);
     }
 }

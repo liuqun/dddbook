@@ -8,5 +8,5 @@ import com.example.bank.types.ExchangeRate;
 import com.example.bank.types.Money;
 
 public interface AccountTransferService {
-    void transfer(Account sourceAccount, Account targetAccount, Money targetMoney, ExchangeRate exchangeRate) throws Exception, DailyLimitExceededException;
+    void transfer(Account sourceAccount, Account targetAccount, Money targetMoney, ExchangeRate exchangeRate);
 }

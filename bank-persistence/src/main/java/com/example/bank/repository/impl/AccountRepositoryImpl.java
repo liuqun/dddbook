@@ -21,13 +21,13 @@ public class AccountRepositoryImpl implements AccountRepository {
     private AccountBuilder accountBuilder;
 
     @Override
-    public Account find(AccountId id) throws Exception {
+    public Account find(AccountId id) {
         AccountDO accountDO = accountDAO.selectById(id.getValue());
         return accountBuilder.toAccount(accountDO);
     }
 
     @Override
-    public Account find(AccountNumber accountNumber) throws Exception {
+    public Account find(AccountNumber accountNumber) {
         AccountDO accountDO = accountDAO.selectByAccountNumber(accountNumber.getValue());
         if (accountDO == null){
             throw new BusinessException(String.format("账户[%s]不存在", accountNumber.getValue()));
@@ -36,7 +36,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Account find(UserId userId) throws Exception {
+    public Account find(UserId userId) {
         AccountDO accountDO = accountDAO.selectByUserId(userId.getId());
         if (accountDO == null){
             throw new BusinessException("账户不存在");
@@ -45,7 +45,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Account save(Account account) throws Exception {
+    public Account save(Account account) {
         AccountDO accountDO = accountBuilder.fromAccount(account);
         if (accountDO.getId() == null) {
             accountDAO.insert(accountDO);
