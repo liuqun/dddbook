@@ -49,6 +49,6 @@ public class TransferServiceImpl implements TransferService {
         AuditMessage message = new AuditMessage(sourceAccount, targetAccount, targetMoney);
         auditMessageProducer.send(message);
 
-        return Result.success(true);
+        return Result.success();
     }
 }

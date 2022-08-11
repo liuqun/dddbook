@@ -1,14 +1,38 @@
 package com.example.bank.common;
 
-public class Result<T> {
+public interface Result<T> {
 
-    private T data;
+    /**
+     * @return 数据
+     */
+    T getData();
 
-    public Result(T data) {
+    /**
+     * success() 静态方法
+     * @return 返回能够代表成功的 Acknowledgement 确认响应
+     */
+    static Result<Boolean> success() {
+        return new Acknowledgement(true);
+    }
+
+    /**
+     * failure() 静态方法
+     * @return 返回能够代表失败的 Acknowledgement 响应
+     */
+    static Result<Boolean> failure() {
+        return new Acknowledgement(false);
+    }
+}
+
+class Acknowledgement implements Result<Boolean> {
+    private final Boolean data;
+
+    public Acknowledgement(Boolean data) {
         this.data = data;
     }
 
-    public static Result success(boolean data) {
-        return new Result(data);
+    @Override
+    public Boolean getData() {
+        return data;
     }
 }
