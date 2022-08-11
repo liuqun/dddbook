@@ -1,20 +1,15 @@
-package com.example.bank.application.impl;
+package com.example.bank.application;
 
-import com.example.bank.application.TransferService;
-import com.example.bank.common.Result;
 import com.example.bank.domain.entity.Account;
 import com.example.bank.domain.service.AccountTransferService;
 import com.example.bank.domain.types.AuditMessage;
-import com.example.bank.exception.DailyLimitExceededException;
-import com.example.bank.exception.InsufficientFundsException;
-import com.example.bank.exception.InvalidCurrencyException;
 import com.example.bank.external.ExchangeRateService;
 import com.example.bank.messaging.AuditMessageProducer;
 import com.example.bank.repository.AccountRepository;
+import com.example.bank.ExchangeRate;
 import com.example.bank.types.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -30,10 +25,10 @@ public class TransferServiceImpl implements TransferService {
 
 //    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result<Boolean> transfer(Long sourceUserId, String targetAccountNumber, BigDecimal targetAmount, String targetCurrency) throws Exception, DailyLimitExceededException {
+    public Result<Boolean> transfer(Long sourceAccountId, String targetAccountNumber, BigDecimal targetAmount, String targetCurrency) {
         Money targetMoney = new Money(targetAmount, new Currency(targetCurrency));
 
-        Account sourceAccount = accountRepository.find(new UserId(sourceUserId));
+        Account sourceAccount = accountRepository.find(new AccountId(sourceAccountId));
 
         Account targetAccount = accountRepository.find(new AccountNumber(targetAccountNumber));
 

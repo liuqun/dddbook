@@ -8,7 +8,6 @@ import com.example.bank.persistence.AccountMapper;
 import com.example.bank.repository.AccountRepository;
 import com.example.bank.types.AccountId;
 import com.example.bank.types.AccountNumber;
-import com.example.bank.types.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,13 +20,13 @@ public class AccountRepositoryImpl implements AccountRepository {
     private AccountBuilder accountBuilder;
 
     @Override
-    public Account find(AccountId id) throws Exception {
+    public Account find(AccountId id) {
         AccountDO accountDO = accountDAO.selectById(id.getValue());
         return accountBuilder.toAccount(accountDO);
     }
 
     @Override
-    public Account find(AccountNumber accountNumber) throws Exception {
+    public Account find(AccountNumber accountNumber) {
         AccountDO accountDO = accountDAO.selectByAccountNumber(accountNumber.getValue());
         if (accountDO == null){
             throw new BusinessException(String.format("账户[%s]不存在", accountNumber.getValue()));
@@ -36,16 +35,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Account find(UserId userId) throws Exception {
-        AccountDO accountDO = accountDAO.selectByUserId(userId.getId());
-        if (accountDO == null){
-            throw new BusinessException("账户不存在");
-        }
-        return accountBuilder.toAccount(accountDO);
-    }
-
-    @Override
-    public Account save(Account account) throws Exception {
+    public Account save(Account account) {
         AccountDO accountDO = accountBuilder.fromAccount(account);
         if (accountDO.getId() == null) {
             accountDAO.insert(accountDO);

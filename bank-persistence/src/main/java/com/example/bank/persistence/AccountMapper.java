@@ -5,8 +5,6 @@ public interface AccountMapper {
 
     int update(AccountDO accountDO);
 
-    AccountDO selectByUserId(Long id);
-
     AccountDO selectByAccountNumber(String accountNumber);
 
     AccountDO selectById(Long id);

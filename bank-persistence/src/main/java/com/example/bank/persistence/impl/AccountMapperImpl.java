@@ -19,11 +19,6 @@ public class AccountMapperImpl implements AccountMapper {
     }
 
     @Override
-    public AccountDO selectByUserId(Long id) {
-        return null;
-    }
-
-    @Override
     public AccountDO selectByAccountNumber(String accountNumber) {
         return null;
     }
